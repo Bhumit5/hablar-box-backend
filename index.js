@@ -16,14 +16,9 @@ app.use(express.json());
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messageRoutes);
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => console.log("DB connection successful"))
-  .catch((err) => console.log(err.message));
+mongoose.connect(process.env.MONGO_URL);
 
-const server = app.listen(process.env.PORT, () => {
-  console.log(`Server listening on ${process.env.PORT}`);
-});
+const server = app.listen(PORT, () => {});
 
 const io = socket(server, {
   cors: {

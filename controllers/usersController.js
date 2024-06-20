@@ -50,14 +50,20 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.setAvatar = async (req, res, next) => {
   try {
-    const userId = await req.params.id;
-    const avatarImage = await req.body.image;
-    const user = await User.findByIdAndUpdate(userId, {
-      isAvatarImageSet: true,
-      avatarImage,
+    const userId = req.params.id;
+    const avatarImage = req.body.image;
+    const userData = await User.findByIdAndUpdate(
+      userId,
+      {
+        isAvatarImageSet: true,
+        avatarImage,
+      },
+      { new: true }
+    );
+    return res.json({
+      isSet: userData.isAvatarImageSet,
+      image: userData.avatarImage,
     });
-
-    return res.json({ isSet: user.isAvatarImageSet, image: user.avatarImage });
   } catch (ex) {
     next(ex);
   }
@@ -71,7 +77,7 @@ module.exports.getAllUsers = async (req, res, next) => {
       "username",
       "avatarImage",
       "_id",
-    ])
+    ]);
     return res.json(users);
   } catch (ex) {
     next(ex);
