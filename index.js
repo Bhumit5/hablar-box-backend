@@ -27,7 +27,7 @@ const server = app.listen(PORT, () => {
 
 const io = socket(server, {
   cors: {
-    origin: "https://hablar-box.netlify.app/",
+    origin: "https://hablar-box.netlify.app",
     Credential: true,
   },
 });
