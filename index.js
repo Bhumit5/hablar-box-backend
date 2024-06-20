@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const socket = require("socket.io");
-const PORT = 5000 || process.env.PORT;
+const PORT = 10000 || process.env.PORT;
 
 const app = express();
 
@@ -16,9 +16,14 @@ app.use(express.json());
 app.use("/api/auth", userRoutes);
 app.use("/api/messages", messageRoutes);
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(console.log("Database connected successfully!"))
+  .catch((err)=>console.log(err));
 
-const server = app.listen(PORT, () => {});
+const server = app.listen(PORT, () => {
+  console.log(`Server is started on ${PORT}`);
+});
 
 const io = socket(server, {
   cors: {
